@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GigSafe AI Insurance</title>
+
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #eef2ff, #f8fafc);
+    margin: 0;
+  }
+
+  .container {
+    max-width: 420px;
+    margin: auto;
+    padding: 20px;
+  }
+
+  h1 { text-align: center; }
+
+  .card {
+    background: white;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    transition: 0.3s;
+  }
+
+  .card:hover { transform: scale(1.02); }
+
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+
+  .active { background: #dcfce7; color: #166534; }
+  .high { background: #fee2e2; color: #991b1b; }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .login-btn { background: black; }
+  .blue { background: #2563eb; }
+  .green { background: #16a34a; }
+
+  .hidden { display: none; }
+
+  select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    border-radius: 8px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- LOGIN -->
+  <div id="login">
+    <h1>🚀 GigSafe</h1>
+    <p style="text-align:center;">AI Insurance for Delivery Partners</p>
+    <button class="login-btn" onclick="login()">Login</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="hidden">
+
+    <h1>Welcome 👋</h1>
+    <p><b>Swiggy Partner</b> | <span id="cityName">Chennai</span></p>
+
+    <!-- CITY -->
+    <div class="card">
+      <h3>📍 Select Location</h3>
+      <select onchange="updateCity(this.value)">
+        <option>Chennai</option>
+        <option>Mumbai</option>
+        <option>Delhi</option>
+      </select>
+      <p id="cityRisk">Risk: Medium</p>
+    </div>
+
+    <!-- POLICY -->
+    <div class="card">
+      <h3>📄 Weekly Policy</h3>
+      <p>Coverage: Income loss due to disruptions</p>
+      <p><b>₹<span id="premium">49</span>/week</b></p>
+      <span class="badge active">Active Plan</span>
+
+      <button class="blue" onclick="calculatePremium()">Recalculate Premium (AI)</button>
+
+      <p id="timer">Next renewal in: 7 days</p>
+    </div>
+
+    <!-- RISK -->
+    <div class="card">
+      <h3>🌦️ Risk Monitor</h3>
+      <p id="weather">Weather: Moderate</p>
+      <span class="badge high">High Risk</span>
+
+      <p>Risk Score:</p>
+      <div style="background:#ddd; border-radius:10px;">
+        <div id="riskBar" style="height:10px; width:70%; background:#ef4444; border-radius:10px;"></div>
+      </div>
+    </div>
+
+    <!-- CLAIM -->
+    <div class="card">
+      <h3>⚡ Smart Claims</h3>
+      <p id="claimStatus">No disruptions detected</p>
+      <p id="fraudCheck">Fraud Check: Pending</p>
+      <p id="alertMsg"></p>
+
+      <button class="green" onclick="triggerClaim()">Simulate Disruption</button>
+    </div>
+
+    <!-- PAYOUT -->
+    <div class="card">
+      <h3>💳 Payout</h3>
+      <p id="payoutMsg">No payouts yet</p>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div class="card">
+      <h3>📊 Analytics</h3>
+      <p>Protected Earnings: ₹2000</p>
+      <p>Claims Approved: 3</p>
+      <p>AI Accuracy: 92%</p>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function login() {
+  document.getElementById("login").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+}
+
+function updateCity(city) {
+  document.getElementById("cityName").innerText = city;
+
+  let riskText = "";
+
+  if (city === "Mumbai") {
+    riskText = "Risk: High (Heavy Rain)";
+  } else if (city === "Delhi") {
+    riskText = "Risk: High (Pollution)";
+  } else {
+    riskText = "Risk: Medium";
+  }
+
+  document.getElementById("cityRisk").innerText = riskText;
+}
+
+function calculatePremium() {
+  let risk = Math.floor(Math.random() * 30);
+  let premium = 40 + risk;
+  document.getElementById("premium").innerText = premium;
+
+  updateRiskBar();
+}
+
+function updateRiskBar() {
+  let value = Math.floor(Math.random() * 100);
+  document.getElementById("riskBar").style.width = value + "%";
+}
+
+function triggerClaim() {
+  document.getElementById("weather").innerText = "Weather: Heavy Rain 🌧️";
+
+  document.getElementById("alertMsg").innerText =
+    "⚠️ Alert: Heavy rain detected in your zone!";
+
+  document.getElementById("claimStatus").innerText =
+    "AI detected disruption → Claim Approved";
+
+  document.getElementById("fraudCheck").innerText =
+    "Fraud Check: ✅ Location Verified";
+
+  document.getElementById("payoutMsg").innerHTML =
+    "Processing payment... ⏳";
+
+  setTimeout(() => {
+    document.getElementById("payoutMsg").innerHTML =
+      "₹500 credited via UPI ✅";
+  }, 1500);
+}
+
+// Weekly timer simulation
+let days = 7;
+setInterval(() => {
+  if (days > 0) {
+    days--;
+    document.getElementById("timer").innerText =
+      "Next renewal in: " + days + " days";
+  }
+}, 3000);
+</script>
+
+</body>
+</html>
